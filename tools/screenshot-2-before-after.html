@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280">
+    <title>Screenshot 2 - Before/After Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 1280px;
+            height: 800px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 1200px;
+            height: 720px;
+            display: flex;
+            gap: 40px;
+            position: relative;
+        }
+        
+        .side {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .label {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* Before side - cluttered */
+        .before {
+            padding: 30px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .before h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .nav-bar {
+            background: #333;
+            color: white;
+            padding: 15px;
+            margin: -30px -30px 20px -30px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-item {
+            cursor: pointer;
+        }
+        
+        .ad-banner {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            padding: 40px;
+            margin: 20px 0;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .sidebar-ad {
+            position: absolute;
+            right: 20px;
+            top: 100px;
+            width: 200px;
+            height: 400px;
+            background: #f0f0f0;
+            border: 2px dashed #999;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .social-buttons {
+            position: fixed;
+            left: 20px;
+            top: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            background: #4267B2;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .popup-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .cookie-banner {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .before-content {
+            max-width: 400px;
+        }
+        
+        .before-content p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        /* After side - clean */
+        .after {
+            padding: 40px;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .markdown-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: -40px -40px 30px -40px;
+            padding: 20px 40px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .markdown-content {
+            flex: 1;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #2c3e50;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .markdown-content h1 {
+            color: #1a1a1a;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .markdown-content strong {
+            color: #667eea;
+        }
+        
+        .markdown-content p {
+            margin-bottom: 15px;
+        }
+        
+        /* VS indicator */
+        .vs-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        
+        /* Noise elements for before side */
+        .related-articles {
+            background: #f5f5f5;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        
+        .related-articles h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .related-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+            color: #0066cc;
+            font-size: 14px;
+        }
+        
+        /* Success indicator */
+        .success-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkmark {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="side">
+            <span class="label">❌ BEFORE - Cluttered Webpage</span>
+            <div class="before">
+                <div class="nav-bar">
+                    <span class="nav-item">Home</span>
+                    <span class="nav-item">About</span>
+                    <span class="nav-item">Services</span>
+                    <span class="nav-item">Blog</span>
+                    <span class="nav-item">Contact</span>
+                </div>
+                
+                <div class="ad-banner">
+                    🎯 SPECIAL OFFER! 50% OFF - CLICK HERE!
+                </div>
+                
+                <div class="before-content">
+                    <h1>How AI is Transforming Our Daily Lives</h1>
+                    
+                    <div class="social-buttons">
+                        <div class="social-btn">f</div>
+                        <div class="social-btn">t</div>
+                        <div class="social-btn">in</div>
+                    </div>
+                    
+                    <p>
+                        Artificial Intelligence has become an integral part of our daily routines, 
+                        from the moment we wake up to smart alarms...
+                    </p>
+                    
+                    <div class="sidebar-ad">
+                        <h3>ADVERTISEMENT</h3>
+                        <br>
+                        <p>Buy Now!</p>
+                        <p>Limited Time</p>
+                        <p>Best Deals</p>
+                    </div>
+                    
+                    <p>
+                        The rapid advancement in AI technology has led to breakthrough innovations 
+                        in healthcare, education, transportation...
+                    </p>
+                </div>
+                
+                <div class="related-articles">
+                    <h3>YOU MIGHT ALSO LIKE</h3>
+                    <div class="related-item">10 Ways AI Will Change Your Job</div>
+                    <div class="related-item">The Future of Machine Learning</div>
+                    <div class="related-item">Top AI Tools for 2025</div>
+                </div>
+                
+                <div class="popup-overlay">
+                    📧 Subscribe to our newsletter! Enter your email...
+                </div>
+                
+                <div class="cookie-banner">
+                    🍪 This website uses cookies. By continuing, you agree to our use of cookies.
+                </div>
+            </div>
+        </div>
+        
+        <div class="vs-badge">VS</div>
+        
+        <div class="side">
+            <span class="label">✅ AFTER - Clean Extracted Content</span>
+            <div class="after">
+                <div class="markdown-header">
+                    EXTRACTED WITH AI CONTENT EXTRACTOR
+                </div>
+                
+                <div class="success-badge">
+                    <span class="checkmark">✓</span>
+                    Ready for AI
+                </div>
+                
+                <div class="markdown-content"># How AI is Transforming Our Daily Lives
+
+**Published:** January 2025 | **Author:** Tech Writer | **Reading Time:** 5 minutes
+
+---
+
+Artificial Intelligence has become an integral part of our daily routines, from the moment we wake up to smart alarms that analyze our sleep patterns, to the personalized recommendations we receive throughout the day.
+
+The rapid advancement in AI technology has led to breakthrough innovations in healthcare, education, transportation, and entertainment. Machine learning algorithms now power everything from medical diagnoses to autonomous vehicles.
+
+## Key Developments
+
+- Healthcare diagnostics improved by 40%
+- Educational personalization for millions
+- Autonomous vehicles becoming reality
+- Entertainment recommendations revolutionized
+
+## Future Implications
+
+As we look toward the future, the integration of AI assistants like ChatGPT and Claude into our workflows has revolutionized how we process information, write content, and solve complex problems.
+
+---
+
+**Extracted:** January 2025
+**Word Count:** 423
+**Format:** Markdown</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
