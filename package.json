@@ -1,0 +1,32 @@
+{
+  "name": "ai-content-extractor",
+  "version": "1.0.0",
+  "description": "Extract readable content from web pages for AI chat context",
+  "scripts": {
+    "build": "node tools/build.js",
+    "zip": "npm run build && cd dist && zip -r ai-content-extractor.zip ../src/*",
+    "clean": "rm -rf dist/*",
+    "test": "echo \"No tests configured\"",
+    "version": "npm version patch && npm run build"
+  },
+  "keywords": [
+    "chrome-extension",
+    "content-extraction",
+    "ai",
+    "chatgpt",
+    "claude",
+    "markdown",
+    "web-scraping"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-content-extractor"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ai-content-extractor/issues"
+  },
+  "homepage": "https://github.com/yourusername/ai-content-extractor#readme"
+}

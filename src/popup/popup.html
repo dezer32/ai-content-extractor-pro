@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Content Extractor</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Content Extractor</h1>
+            <p>Extract clean content for AI conversations</p>
+        </div>
+
+        <div class="content-box">
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="word-count">0</div>
+                    <div class="stat-label">Words</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="char-count">0</div>
+                    <div class="stat-label">Characters</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="reading-time">0</div>
+                    <div class="stat-label">Min Read</div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-label">Content Preview</div>
+                <div id="content-preview">Click "Extract Content" to begin...</div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px; color: #666;">Extracting content...</p>
+            </div>
+
+            <div class="buttons">
+                <button class="extract-btn" id="extract-btn">Extract</button>
+                <button class="copy-btn" id="copy-btn" disabled>Copy</button>
+                <button class="clear-btn" id="clear-btn">Clear</button>
+            </div>
+
+            <div class="options">
+                <div class="option-item">
+                    <span class="option-label">Include Images</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="include-images">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="option-item">
+                    <span class="option-label">Include Links</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="include-links" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="option-item">
+                    <span class="option-label">Markdown Format</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="markdown-format" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="status" id="status"></div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

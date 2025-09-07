@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.zip
+
+# IDE and OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+
+# Test coverage
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# Generated icons (if using automated generation)
+src/assets/icons/*.png
+
+# Private keys and certificates
+*.pem
+*.key
+
+# Chrome extension specific
+*.crx
+*.pem
+
+# Local development
+.chrome-extension-dev/

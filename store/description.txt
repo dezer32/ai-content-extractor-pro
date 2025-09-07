@@ -1,0 +1,113 @@
+# Chrome Web Store Listing
+
+## Short Description (132 characters max)
+Extract clean, readable content from any webpage and format it perfectly for AI chats like ChatGPT & Claude.
+
+## Detailed Description
+
+🚀 **AI Content Extractor** - Your Bridge Between Web Content and AI Conversations
+
+Transform any webpage into clean, AI-ready text with just one click! Perfect for researchers, students, professionals, and anyone who uses AI chatbots.
+
+### ✨ Key Features
+
+**Smart Content Detection**
+- Automatically identifies main article content
+- Removes ads, navigation, and clutter
+- Preserves important text structure
+
+**Multiple Format Options**
+- Clean Markdown formatting
+- Plain text extraction
+- Optional link preservation
+- Image alt-text inclusion
+
+**Powerful Extraction Tools**
+- One-click full page extraction
+- Selected text extraction
+- Right-click context menu
+- Keyboard shortcuts (Ctrl+Shift+E)
+
+**Real-time Statistics**
+- Word count display
+- Character counter
+- Estimated reading time
+- Content preview
+
+**Privacy First**
+- 100% local processing
+- No data collection
+- No external servers
+- No tracking
+
+### 🎯 Perfect For
+
+- **Researchers**: Extract articles for analysis
+- **Students**: Gather content for assignments
+- **Professionals**: Prepare documents for AI processing
+- **Content Creators**: Collect reference materials
+- **Developers**: Extract documentation
+
+### 💡 How It Works
+
+1. Click the extension icon on any webpage
+2. Press "Extract" to capture content
+3. Review the cleaned text preview
+4. Click "Copy" to clipboard
+5. Paste into your favorite AI chat
+
+### 🔧 Customization Options
+
+- Include/exclude images
+- Include/exclude links
+- Choose Markdown or plain text
+- Auto-extraction on page load
+- Customizable keyboard shortcuts
+
+### 🛡️ Privacy & Security
+
+Your privacy is our priority. This extension:
+- Works entirely offline in your browser
+- Never sends data to external servers
+- Doesn't track your browsing
+- Doesn't require sign-up
+- Open source and transparent
+
+### 📱 Compatibility
+
+- Chrome 88+
+- Brave Browser
+- Edge (Chromium)
+- Opera
+- Vivaldi
+
+### 🆕 What's New in v1.0.0
+
+- Initial release
+- Smart content detection algorithm
+- Markdown formatting support
+- Context menu integration
+- Keyboard shortcuts
+- Clean, modern UI
+
+### 💬 Support
+
+Having issues or suggestions? 
+- Report bugs on GitHub
+- Request features
+- Read documentation
+
+### 🌟 Why Choose AI Content Extractor?
+
+Unlike simple copy-paste, this extension:
+- Intelligently identifies main content
+- Removes unwanted elements
+- Formats for optimal AI understanding
+- Saves hours of manual cleaning
+- Works on any website
+
+Transform your web browsing into an AI-powered research tool. Install AI Content Extractor today!
+
+---
+
+**Keywords**: AI, ChatGPT, Claude, content extraction, web scraping, markdown, text extraction, productivity, research tool, content cleaner

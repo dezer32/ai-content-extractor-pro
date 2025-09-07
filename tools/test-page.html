@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page for AI Content Extractor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 20px;
+            margin: -20px -20px 20px -20px;
+        }
+        nav {
+            background: #f4f4f4;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        article {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .sidebar {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        .ad {
+            background: #ffe4e4;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px dashed #ff0000;
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 20px -20px -20px -20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #f4f4f4;
+        }
+        blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #666;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Test Website Header</h1>
+        <p>Navigation and branding that should be removed</p>
+    </header>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </nav>
+
+    <div class="ad">
+        <h2>ADVERTISEMENT</h2>
+        <p>This is an ad that should be removed during extraction</p>
+    </div>
+
+    <article>
+        <h1>Main Article Title: Testing AI Content Extractor</h1>
+        
+        <p><strong>Published:</strong> January 2025 | <strong>Author:</strong> Test Author | <strong>Reading Time:</strong> 5 minutes</p>
+        
+        <h2>Introduction</h2>
+        <p>This is a test page designed to verify that the AI Content Extractor extension works correctly. The extension should identify this article as the main content and extract it while removing navigation, ads, and other non-essential elements.</p>
+        
+        <h2>Features Being Tested</h2>
+        
+        <h3>Text Formatting</h3>
+        <p>The extension should preserve <strong>bold text</strong>, <em>italic text</em>, and <code>inline code</code>. It should also handle different heading levels appropriately.</p>
+        
+        <h3>Lists</h3>
+        <p>Here's an unordered list:</p>
+        <ul>
+            <li>First item</li>
+            <li>Second item with <strong>formatting</strong></li>
+            <li>Third item with a <a href="https://example.com">link</a></li>
+        </ul>
+        
+        <p>And an ordered list:</p>
+        <ol>
+            <li>Step one</li>
+            <li>Step two</li>
+            <li>Step three</li>
+        </ol>
+        
+        <h3>Blockquotes</h3>
+        <blockquote>
+            "This is a blockquote that should be preserved in the extraction. It represents a quote or important callout in the article."
+        </blockquote>
+        
+        <h3>Tables</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Text Extraction</td>
+                    <td>Working</td>
+                    <td>Removes clutter effectively</td>
+                </tr>
+                <tr>
+                    <td>Markdown Conversion</td>
+                    <td>Working</td>
+                    <td>Preserves formatting</td>
+                </tr>
+                <tr>
+                    <td>Link Handling</td>
+                    <td>Configurable</td>
+                    <td>Can include or exclude</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Code Blocks</h3>
+        <p>Here's a code block that should be preserved:</p>
+        <pre><code>function extractContent() {
+    const article = document.querySelector('article');
+    const content = article.textContent;
+    return content;
+}</code></pre>
+        
+        <h2>Links and References</h2>
+        <p>This paragraph contains multiple links: Visit <a href="https://google.com">Google</a> for search, check out <a href="https://github.com">GitHub</a> for code, and read documentation on <a href="https://developer.mozilla.org">MDN</a>.</p>
+        
+        <h2>Image Handling</h2>
+        <p>Below is an image with alt text:</p>
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='400' height='200' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-family='sans-serif' font-size='20'%3ETest Image%3C/text%3E%3C/svg%3E" alt="This is a test image description">
+        
+        <h2>Conclusion</h2>
+        <p>If the extension is working correctly, all of this article content should be extracted cleanly, formatted properly, and ready for use in AI chat applications. The sidebar, advertisements, navigation, and footer should all be excluded from the extraction.</p>
+        
+        <p>This test page includes various HTML elements and structures commonly found on real websites, making it a comprehensive test for the content extraction algorithm.</p>
+    </article>
+
+    <div class="sidebar">
+        <h3>Sidebar Content</h3>
+        <p>This is sidebar content that should typically be excluded from extraction.</p>
+        <ul>
+            <li>Related Article 1</li>
+            <li>Related Article 2</li>
+            <li>Related Article 3</li>
+        </ul>
+    </div>
+
+    <div class="ad">
+        <h2>ANOTHER ADVERTISEMENT</h2>
+        <p>More advertising content that should be filtered out</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Test Website. All rights reserved.</p>
+        <p>Privacy Policy | Terms of Service | Contact Us</p>
+    </footer>
+</body>
+</html>
