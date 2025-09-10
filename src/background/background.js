@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener((details) => {
         
         // Set default options
         chrome.storage.sync.set({
-            includeImages: false,
+            includeImages: true,
             includeLinks: true,
             markdownFormat: true,
             autoExtract: false,
@@ -68,7 +68,7 @@ async function extractFullPage(tab) {
     chrome.tabs.sendMessage(tab.id, {
         action: 'extractContent',
         options: {
-            includeImages: false,
+            includeImages: true,
             includeLinks: true,
             markdownFormat: true
         }

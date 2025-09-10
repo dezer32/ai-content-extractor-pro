@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadOptions() {
     chrome.storage.sync.get({
-        includeImages: false,
+        includeImages: true,
         includeLinks: true,
         markdownFormat: true
     }, function(items) {

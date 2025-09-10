@@ -180,8 +180,12 @@ class ContentExtractor {
     removeEmptyElements(element) {
         const allElements = element.querySelectorAll('*');
         allElements.forEach(el => {
-            // Don't remove elements that contain images, videos, or iframes
-            const hasMedia = el.querySelector('img, video, iframe, picture, svg');
+            // Don't remove media elements themselves
+            const isMediaElement = ['IMG', 'VIDEO', 'IFRAME', 'PICTURE', 'SVG', 'AUDIO', 'CANVAS'].includes(el.tagName);
+            if (isMediaElement) return;
+            
+            // Don't remove elements that contain media
+            const hasMedia = el.querySelector('img, video, iframe, picture, svg, audio, canvas');
             const hasText = el.textContent.trim();
             
             if (!hasText && !hasMedia) {
@@ -300,10 +304,23 @@ class ContentExtractor {
             case 'img':
                 if (options.includeImages) {
                     // Handle various image source attributes (including lazy-loaded images)
-                    const src = node.getAttribute('src') || 
-                                node.getAttribute('data-src') || 
-                                node.getAttribute('data-lazy-src') ||
-                                node.getAttribute('data-original');
+                    let src = node.getAttribute('src') || 
+                              node.getAttribute('data-src') || 
+                              node.getAttribute('data-lazy-src') ||
+                              node.getAttribute('data-original');
+                    
+                    // If no src found, try srcset
+                    if (!src || src.startsWith('data:image/gif;base64')) {
+                        const srcset = node.getAttribute('srcset') || node.getAttribute('data-srcset');
+                        if (srcset) {
+                            // Extract the first URL from srcset
+                            const firstSource = srcset.split(',')[0].trim().split(' ')[0];
+                            if (firstSource) {
+                                src = firstSource;
+                            }
+                        }
+                    }
+                    
                     const alt = node.getAttribute('alt') || 
                                node.getAttribute('title') || 
                                'Image';
@@ -320,10 +337,22 @@ class ContentExtractor {
                     const figcaption = node.querySelector('figcaption');
                     
                     if (img) {
-                        const src = img.getAttribute('src') || 
-                                   img.getAttribute('data-src') || 
-                                   img.getAttribute('data-lazy-src') ||
-                                   img.getAttribute('data-original');
+                        let src = img.getAttribute('src') || 
+                                  img.getAttribute('data-src') || 
+                                  img.getAttribute('data-lazy-src') ||
+                                  img.getAttribute('data-original');
+                        
+                        // If no src found or it's a placeholder, try srcset
+                        if (!src || src.startsWith('data:image/gif;base64')) {
+                            const srcset = img.getAttribute('srcset') || img.getAttribute('data-srcset');
+                            if (srcset) {
+                                const firstSource = srcset.split(',')[0].trim().split(' ')[0];
+                                if (firstSource) {
+                                    src = firstSource;
+                                }
+                            }
+                        }
+                        
                         const alt = img.getAttribute('alt') || figcaption?.textContent || 'Image';
                         if (src && !src.startsWith('data:image/gif;base64')) {
                             markdown += `![${alt}](${this.resolveUrl(src)})`;
@@ -349,9 +378,39 @@ class ContentExtractor {
                     // Handle picture element with multiple sources
                     const img = node.querySelector('img');
                     if (img) {
-                        const src = img.getAttribute('src') || img.getAttribute('data-src');
+                        let src = img.getAttribute('src') || 
+                                  img.getAttribute('data-src') ||
+                                  img.getAttribute('data-lazy-src') ||
+                                  img.getAttribute('data-original');
+                        
+                        // If no src or it's a placeholder, try srcset on img
+                        if (!src || src.startsWith('data:image/gif;base64')) {
+                            const srcset = img.getAttribute('srcset') || img.getAttribute('data-srcset');
+                            if (srcset) {
+                                const firstSource = srcset.split(',')[0].trim().split(' ')[0];
+                                if (firstSource) {
+                                    src = firstSource;
+                                }
+                            }
+                        }
+                        
+                        // If still no src, check source elements
+                        if (!src || src.startsWith('data:image/gif;base64')) {
+                            const sources = node.querySelectorAll('source');
+                            for (const source of sources) {
+                                const srcset = source.getAttribute('srcset') || source.getAttribute('data-srcset');
+                                if (srcset) {
+                                    const firstSource = srcset.split(',')[0].trim().split(' ')[0];
+                                    if (firstSource) {
+                                        src = firstSource;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        
                         const alt = img.getAttribute('alt') || 'Image';
-                        if (src) {
+                        if (src && !src.startsWith('data:image/gif;base64')) {
                             markdown += `![${alt}](${this.resolveUrl(src)})`;
                         }
                     }
