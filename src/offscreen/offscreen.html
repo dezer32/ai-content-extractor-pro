@@ -3,21 +3,7 @@
 <head>
     <title>Offscreen Document</title>
 </head>
-<body>
-    <script>
-        // Handle clipboard operations in offscreen document
-        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-            if (request.action === 'copyToClipboard') {
-                navigator.clipboard.writeText(request.text)
-                    .then(() => {
-                        sendResponse({ success: true });
-                    })
-                    .catch(err => {
-                        sendResponse({ success: false, error: err.message });
-                    });
-                return true;
-            }
-        });
-    </script>
+<body tabindex="0">
+    <script src="offscreen.js"></script>
 </body>
 </html>

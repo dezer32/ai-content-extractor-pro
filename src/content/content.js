@@ -180,7 +180,11 @@ class ContentExtractor {
     removeEmptyElements(element) {
         const allElements = element.querySelectorAll('*');
         allElements.forEach(el => {
-            if (!el.textContent.trim() && !el.querySelector('img')) {
+            // Don't remove elements that contain images, videos, or iframes
+            const hasMedia = el.querySelector('img, video, iframe, picture, svg');
+            const hasText = el.textContent.trim();
+            
+            if (!hasText && !hasMedia) {
                 el.remove();
             }
         });
@@ -251,11 +255,11 @@ class ContentExtractor {
                 break;
             case 'strong':
             case 'b':
-                markdown += `**${this.getTextContent(node)}**`;
+                markdown += `**${this.processChildren(node, options, listLevel)}**`;
                 break;
             case 'em':
             case 'i':
-                markdown += `*${this.getTextContent(node)}*`;
+                markdown += `*${this.processChildren(node, options, listLevel)}*`;
                 break;
             case 'code':
                 markdown += `\`${this.getTextContent(node)}\``;
@@ -295,10 +299,61 @@ class ContentExtractor {
                 break;
             case 'img':
                 if (options.includeImages) {
-                    const src = node.getAttribute('src');
-                    const alt = node.getAttribute('alt') || 'Image';
-                    if (src) {
+                    // Handle various image source attributes (including lazy-loaded images)
+                    const src = node.getAttribute('src') || 
+                                node.getAttribute('data-src') || 
+                                node.getAttribute('data-lazy-src') ||
+                                node.getAttribute('data-original');
+                    const alt = node.getAttribute('alt') || 
+                               node.getAttribute('title') || 
+                               'Image';
+                    if (src && !src.startsWith('data:image/gif;base64')) {
+                        // Skip placeholder images
                         markdown += `![${alt}](${this.resolveUrl(src)})`;
+                    }
+                }
+                break;
+            case 'figure':
+                if (options.includeImages) {
+                    // Handle figure with images and captions
+                    const img = node.querySelector('img');
+                    const figcaption = node.querySelector('figcaption');
+                    
+                    if (img) {
+                        const src = img.getAttribute('src') || 
+                                   img.getAttribute('data-src') || 
+                                   img.getAttribute('data-lazy-src') ||
+                                   img.getAttribute('data-original');
+                        const alt = img.getAttribute('alt') || figcaption?.textContent || 'Image';
+                        if (src && !src.startsWith('data:image/gif;base64')) {
+                            markdown += `![${alt}](${this.resolveUrl(src)})`;
+                            if (figcaption) {
+                                markdown += `\n*${figcaption.textContent.trim()}*\n`;
+                            }
+                            markdown += '\n';
+                        }
+                    } else {
+                        // No image in figure, process children normally
+                        markdown += this.processChildren(node, options, listLevel);
+                    }
+                } else {
+                    // If not including images, still process text content
+                    const figcaption = node.querySelector('figcaption');
+                    if (figcaption) {
+                        markdown += this.processChildren(node, options, listLevel);
+                    }
+                }
+                break;
+            case 'picture':
+                if (options.includeImages) {
+                    // Handle picture element with multiple sources
+                    const img = node.querySelector('img');
+                    if (img) {
+                        const src = img.getAttribute('src') || img.getAttribute('data-src');
+                        const alt = img.getAttribute('alt') || 'Image';
+                        if (src) {
+                            markdown += `![${alt}](${this.resolveUrl(src)})`;
+                        }
                     }
                 }
                 break;
@@ -422,10 +477,14 @@ class ContentExtractor {
                     text += ` [${node.textContent}](${this.resolveUrl(href)}) `;
                 }
             } else if (node.tagName === 'IMG' && options.includeImages) {
-                const alt = node.getAttribute('alt');
-                const src = node.getAttribute('src');
-                if (src) {
-                    text += ` [Image: ${alt || 'No description'}] `;
+                const alt = node.getAttribute('alt') || node.getAttribute('title');
+                const src = node.getAttribute('src') || 
+                           node.getAttribute('data-src') || 
+                           node.getAttribute('data-lazy-src') ||
+                           node.getAttribute('data-original');
+                if (src && !src.startsWith('data:image/gif;base64')) {
+                    const resolvedUrl = this.resolveUrl(src);
+                    text += ` ![${alt || 'Image'}](${resolvedUrl}) `;
                 }
             }
         }

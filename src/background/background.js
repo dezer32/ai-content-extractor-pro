@@ -45,20 +45,25 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-function extractSelection(selectedText, tab) {
+async function extractSelection(selectedText, tab) {
     if (!selectedText) return;
     
-    // Format the selected text
-    const formatted = formatForAI(selectedText, tab.url, tab.title);
-    
-    // Copy to clipboard
-    copyToClipboard(formatted);
-    
-    // Show notification
-    showNotification('Text Extracted', 'Selected text has been formatted and copied to clipboard');
+    try {
+        // Format the selected text
+        const formatted = formatForAI(selectedText, tab.url, tab.title);
+        
+        // Copy to clipboard and wait for completion
+        await copyToClipboard(formatted);
+        
+        // Show success notification only after successful copy
+        showNotification('Text Extracted', 'Selected text has been formatted and copied to clipboard');
+    } catch (error) {
+        console.error('Failed to extract selection:', error);
+        showNotification('Extraction Failed', 'Failed to copy text to clipboard. Please try again.');
+    }
 }
 
-function extractFullPage(tab) {
+async function extractFullPage(tab) {
     // Send message to content script to extract full page
     chrome.tabs.sendMessage(tab.id, {
         action: 'extractContent',
@@ -67,15 +72,20 @@ function extractFullPage(tab) {
             includeLinks: true,
             markdownFormat: true
         }
-    }, (response) => {
+    }, async (response) => {
         if (chrome.runtime.lastError) {
             showNotification('Extraction Failed', chrome.runtime.lastError.message);
             return;
         }
         
         if (response && response.success) {
-            copyToClipboard(response.content);
-            showNotification('Page Extracted', 'Page content has been extracted and copied to clipboard');
+            try {
+                await copyToClipboard(response.content);
+                showNotification('Page Extracted', 'Page content has been extracted and copied to clipboard');
+            } catch (error) {
+                console.error('Failed to copy page content:', error);
+                showNotification('Copy Failed', 'Content extracted but failed to copy to clipboard');
+            }
         }
     });
 }
@@ -92,21 +102,46 @@ function formatForAI(text, url, title) {
 
 async function copyToClipboard(text) {
     try {
-        // Try using the Clipboard API
-        await chrome.offscreen.createDocument({
-            url: '../offscreen/offscreen.html',
-            reasons: ['CLIPBOARD'],
-            justification: 'Copy extracted content to clipboard'
+        // Check if offscreen document already exists
+        const existingContexts = await chrome.runtime.getContexts({
+            contextTypes: ['OFFSCREEN_DOCUMENT'],
+            documentUrls: [chrome.runtime.getURL('offscreen/offscreen.html')]
         });
         
-        await chrome.runtime.sendMessage({
-            action: 'copyToClipboard',
-            text: text
-        });
+        if (!existingContexts.length) {
+            // Create offscreen document
+            await chrome.offscreen.createDocument({
+                url: 'offscreen/offscreen.html',
+                reasons: ['CLIPBOARD'],
+                justification: 'Copy extracted content to clipboard'
+            });
+            
+            // Wait a bit for the document to be ready
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
         
-        await chrome.offscreen.closeDocument();
+        // Send message to offscreen document via a Promise wrapper
+        return new Promise((resolve, reject) => {
+            chrome.runtime.sendMessage({
+                action: 'copyToClipboard',
+                text: text
+            }, (response) => {
+                if (chrome.runtime.lastError) {
+                    console.error('Message error:', chrome.runtime.lastError);
+                    reject(new Error(chrome.runtime.lastError.message));
+                    return;
+                }
+                
+                if (response?.success) {
+                    resolve(true);
+                } else {
+                    reject(new Error(response?.error || 'Failed to copy to clipboard'));
+                }
+            });
+        });
     } catch (error) {
         console.error('Failed to copy to clipboard:', error);
+        throw error; // Re-throw to handle in calling function
     }
 }
 
@@ -129,15 +164,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true;
     }
     
-    if (request.action === 'copyToClipboard') {
-        // This would be handled by the offscreen document
-        navigator.clipboard.writeText(request.text).then(() => {
-            sendResponse({ success: true });
-        }).catch(err => {
-            sendResponse({ success: false, error: err.message });
-        });
-        return true;
-    }
+    // Removed redundant clipboard handler - this is handled by offscreen document
 });
 
 // Keyboard shortcut handler
