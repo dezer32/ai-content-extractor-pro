@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Note**: This project uses [bd (beads)](https://github.com/steveyegge/beads) for issue tracking. Use `bd` commands instead of markdown TODOs. See AGENTS.md for workflow details.
+
 ## Project Overview
 
 AI Content Extractor is a Chrome/Brave browser extension that extracts readable content from web pages and formats it for use in AI chat contexts. The extension uses Manifest V3 and provides smart content extraction with Markdown formatting capabilities.
